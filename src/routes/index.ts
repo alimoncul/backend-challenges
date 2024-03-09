@@ -3,7 +3,7 @@ import HealthController from "../controllers/health";
 
 const router = express.Router();
 
-router.get("/health", async (_req, res) => {
+router.get("/api/health", async (_req, res) => {
   const controller = new HealthController();
   const response = await controller.getHealth();
   return res.send(response);

@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(Router);
 
 app.use(
-  "/swagger",
+  "/api/swagger",
   swaggerUi.serve,
   swaggerUi.setup(swaggerDocument, { explorer: true }
   )
