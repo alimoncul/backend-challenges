@@ -1,2 +1,0 @@
-# backend-challenges
-backend challenges
