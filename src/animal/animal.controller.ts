@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Logger } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AnimalService } from './animal.service';
 import { Animal } from './animal.schema';
+import { CreateAnimalDto } from './animal.dto';
 
 @ApiTags('animals')
 @Controller('animals')
@@ -18,10 +19,12 @@ export class AnimalController {
   }
 
   @Post()
-  @ApiBody({ type: Animal })
+  @ApiBody({ type: CreateAnimalDto })
   @ApiOperation({ summary: 'Create a new animal' })
   @ApiResponse({ status: 201, description: 'Animal created successfully' })
-  async createAnimal(@Body() createAnimalBody: Animal): Promise<Animal> {
+  async createAnimal(
+    @Body() createAnimalBody: CreateAnimalDto,
+  ): Promise<Animal> {
     return this.animalService.createAnimal(createAnimalBody);
   }
 }

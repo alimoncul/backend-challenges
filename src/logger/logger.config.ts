@@ -10,8 +10,8 @@ export const winstonConfig = {
         winston.format.colorize(),
         winston.format.timestamp(),
         winston.format.printf(
-          ({ timestamp, level, message }) =>
-            `${timestamp} ${level}: ${message}`,
+          ({ timestamp, level, message, stack }) =>
+            `${timestamp} ${level}: ${message} ${stack ? '\n' + stack : ''}`,
         ),
       ),
     }),

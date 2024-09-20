@@ -2,8 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
+const mockMessage = `Hello Alim, this is your example data!`;
+
 describe('AppController', () => {
-  let appController: AppController;
+  let controller: AppController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -11,14 +13,17 @@ describe('AppController', () => {
       providers: [AppService],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    controller = app.get<AppController>(AppController);
   });
 
   describe('root', () => {
-    it('should return "Hello, this is your example data!"', () => {
-      expect(appController.getExampleData()).toBe(
-        'Hello, this is your example data!',
-      );
+    it('should be defined', () => {
+      expect(controller).toBeDefined();
+    });
+
+    it('should return hello message', async () => {
+      const result = await controller.getExampleData('Alim');
+      expect(result).toEqual(mockMessage);
     });
   });
 });

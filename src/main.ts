@@ -5,11 +5,18 @@ import { MetricsInterceptor } from './metrics/metrics.interceptor';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from './logger/logger.config';
 import * as packageJSON from '../package.json';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger(winstonConfig),
   });
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
   app.setGlobalPrefix('api');
 
   // Apply the MetricsInterceptor globally
