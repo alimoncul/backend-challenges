@@ -6,10 +6,14 @@ import { CreateAnimalDto } from './animal.dto';
 
 @Injectable()
 export class AnimalService {
-  constructor(@InjectModel(Animal.name) private animalModel: Model<Animal>) {}
+  constructor(@InjectModel('Animal') private animalModel: Model<Animal>) {}
 
   async createAnimal(createAnimalBody: CreateAnimalDto): Promise<Animal> {
     return this.animalModel.create({ ...createAnimalBody });
+  }
+
+  async deleteAll(): Promise<void> {
+    await this.animalModel.deleteMany().exec();
   }
 
   async findAll(): Promise<Animal[]> {

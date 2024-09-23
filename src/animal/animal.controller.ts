@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Logger } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AnimalService } from './animal.service';
 import { Animal } from './animal.schema';
@@ -7,8 +7,6 @@ import { CreateAnimalDto } from './animal.dto';
 @ApiTags('animals')
 @Controller('animals')
 export class AnimalController {
-  private readonly logger = new Logger(AnimalController.name);
-
   constructor(private readonly animalService: AnimalService) {}
 
   @Get()
@@ -26,5 +24,12 @@ export class AnimalController {
     @Body() createAnimalBody: CreateAnimalDto,
   ): Promise<Animal> {
     return this.animalService.createAnimal(createAnimalBody);
+  }
+
+  @Delete()
+  @ApiOperation({ summary: 'Deletes all animals in the database' })
+  @ApiResponse({ status: 200, description: 'All animals deleted' })
+  async deleteAllAnimals(): Promise<void> {
+    return this.animalService.deleteAll();
   }
 }

@@ -27,14 +27,14 @@ describe('AnimalService', () => {
       providers: [
         AnimalService,
         {
-          provide: getModelToken(Animal.name),
+          provide: getModelToken('Animal'),
           useValue: mockAnimalModel,
         },
       ],
     }).compile();
 
     service = module.get<AnimalService>(AnimalService);
-    model = module.get<Model<Animal>>(getModelToken(Animal.name));
+    model = module.get<Model<Animal>>(getModelToken('Animal'));
   });
 
   it('should be defined', () => {
