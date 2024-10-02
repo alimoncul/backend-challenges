@@ -5,7 +5,7 @@ import { register } from 'prom-client';
 
 @Controller('metrics')
 @ApiTags('metrics')
-export class MetricsController {
+export class MetricController {
   @Get()
   @ApiOperation({ summary: 'Get metrics' })
   @ApiResponse({ status: 200, description: 'Success' })

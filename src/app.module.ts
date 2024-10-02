@@ -1,12 +1,13 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MetricsController } from './metrics/metrics.controller';
+import { MetricController } from './metric/metric.controller';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AnimalModule } from './animal/animal.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { VeterinaryModule } from './veterinary/veterinary.module';
+import { ResourceController } from './resource/resource.controller';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { VeterinaryModule } from './veterinary/veterinary.module';
     AnimalModule,
     VeterinaryModule,
   ],
-  controllers: [AppController, MetricsController],
+  controllers: [AppController, MetricController, ResourceController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {

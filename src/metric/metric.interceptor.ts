@@ -9,7 +9,7 @@ import { tap } from 'rxjs/operators';
 import { Counter, Histogram } from 'prom-client';
 
 @Injectable()
-export class MetricsInterceptor implements NestInterceptor {
+export class MetricInterceptor implements NestInterceptor {
   private requestCounter: Counter<string>;
   private errorCounter: Counter<string>;
   private requestLatency: Histogram<string>;
