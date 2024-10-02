@@ -5,7 +5,7 @@ import { MetricsInterceptor } from './metrics/metrics.interceptor';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from './logger/logger.config';
 import * as packageJSON from '../package.json';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -18,6 +18,10 @@ async function bootstrap() {
     }),
   );
   app.setGlobalPrefix('api');
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1',
+  });
 
   // Apply the MetricsInterceptor globally
   app.useGlobalInterceptors(new MetricsInterceptor());
