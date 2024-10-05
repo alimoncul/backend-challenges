@@ -1,0 +1,63 @@
+config:
+  target: 'http://localhost:3000'
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      rampTo: 10
+      name: Warm up the API
+    - duration: 60
+      arrivalRate: 10
+      rampTo: 50
+      name: Ramp up to peak load
+    - duration: 240
+      arrivalRate: 25
+      name: Sustained peak load
+scenarios:
+  - name: Animal Endpoints
+    flow:
+      - get:
+          url: "/api/v1/animals"
+      - post:
+          url: "/api/v1/animals"
+          json:
+            name: "Lion"
+            owner: "John Doe"
+            species: "Panthera leo"
+            birthYear: "2024-01-01T00:00:00.000Z"
+          capture:
+            - json: "$._id"
+              as: animal_id
+      - get:
+          url: "/api/v1/animals/{{ animal_id }}"
+          expect:
+            - statusCode: 201
+            - contentType: json
+            - hasProperty: name
+            - equals:
+                - "Lion"
+  - name: Veterinary Endpoints
+    flow:
+      - get:
+          url: "/api/v1/animals"
+          capture:
+            - json: "$[0]._id"
+              as: animal_id
+      - get:
+          url: "/api/v1/veterinaries"
+      - post:
+          url: "/api/v1/veterinaries"
+          json:
+            animals: ["{{ animal_id }}"]
+            date: "2024-01-01T00:00:00.000Z"
+            description: "Routine wellness examination"
+          capture:
+            - json: "$._id"
+              as: veterinary_report_id
+      - get:
+          url: "/api/v1/veterinaries/{{ veterinary_report_id }}"
+          expect:
+            - statusCode: 200
+            - contentType: json
+            - hasProperty: animals[0]._id
+            - equals:
+              - "{{ animal_id }}"

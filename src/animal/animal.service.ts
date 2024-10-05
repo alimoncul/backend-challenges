@@ -1,6 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Animal } from './animal.schema';
 import { CreateAnimalDto } from './animal.dto';
 
@@ -18,5 +22,19 @@ export class AnimalService {
 
   async findAll(): Promise<Animal[]> {
     return this.animalModel.find().exec();
+  }
+
+  async findOne(id: string): Promise<Animal> {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid animal ID.');
+    }
+
+    const result = await this.animalModel.findById(id).exec();
+
+    if (result === null) {
+      throw new NotFoundException('Animal record not found.');
+    }
+
+    return result;
   }
 }

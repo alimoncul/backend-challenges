@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, Param } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AnimalService } from './animal.service';
 import { Animal } from './animal.schema';
@@ -14,6 +14,14 @@ export class AnimalController {
   @ApiResponse({ status: 200, description: 'Success' })
   async getAllAnimals(): Promise<Animal[]> {
     return this.animalService.findAll();
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get an animal record by ID' })
+  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiResponse({ status: 404, description: 'Animal record not found' })
+  async findOne(@Param('id') id: string): Promise<Animal> {
+    return this.animalService.findOne(id);
   }
 
   @Post()
